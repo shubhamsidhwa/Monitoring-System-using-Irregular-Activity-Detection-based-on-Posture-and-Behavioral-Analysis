@@ -2,7 +2,7 @@ MONITORING SYSTEM USING IRREGULAR ACTIVITY DETECTION
 BASED ON POSTURE AND BEHAVIORAL ANALYSIS
 
 Public places like restaurants and certain other viable
-places like banks or ATM’s are in need of constant
+places like banks or ATMâ€™s are in need of constant
 supervision against amoral and undesirable activities.
 These undesirable activites are often markedly preceded
 by apparent behavioral quirks. However, constant
@@ -39,7 +39,7 @@ Installing
 
 If any library is not installed, install them by pip install libraryname
 
-Example, pip install cv2 will install the cv2 library
+Example, pip install keras will install the keras library
 
 Running the codes :
 
@@ -59,16 +59,14 @@ All but one video is classified as per the ground truth expectation.
 
 Videos are present in the test2 folder and divided as normal and subnormal.
 
-This project was developed by :
-Kiran Yeragudipati 
+This project was developed by : 
 Shubham Sidhwa
-Aparnaa Ramani
 
 Acknowledgments
-We would like to express our gratitude to
-Dr. Ghassan AlRegib for providing us an
+I would like to express my gratitude to
+Dr. Ghassan AlRegib for providing me an
 opportunity to pursue this project and provide
-continuous support. Further we also
-thank Mr. Wenjie Y. for approving our application
-and providing us access to the CASIA
+continuous support. Further I also
+thank Mr. Wenjie Y. for approving my application
+and providing me access to the CASIA
 human activity database.
