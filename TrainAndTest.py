@@ -1,10 +1,14 @@
 import numpy
 import pandas
+
 from keras.models import Sequential
 from keras.layers import Dense
+
 from sklearn.preprocessing import LabelEncoder
+
 import cv2
 import numpy as np
+
 import os
 import math
 
@@ -25,6 +29,7 @@ def MHI(video_src):
 		hsv[:, :, 1] = 255
 		motion_history = np.zeros((h, w), np.float32)
 		timestamp = 0
+
 		while True:
 			ret, frame = cam.read()
 			if not ret:
@@ -77,6 +82,7 @@ dataset = dataframe.values
 # split into input (X) and output (Y) variables
 X = dataset[:,0:1].astype(float)
 Y = dataset[:,1]
+
 encoder = LabelEncoder()
 encoder.fit(Y)
 encoded_Y = encoder.transform(Y)
@@ -86,6 +92,7 @@ model = Sequential()
 model.add(Dense(32, input_dim=1, kernel_initializer='normal', activation='relu'))
 model.add(Dense(1, kernel_initializer='normal', activation='sigmoid'))
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
 #The model is fitted for 500 epochs
 model.fit(X,encoded_Y, epochs=500, verbose=True)
 
@@ -100,6 +107,7 @@ MIN_TIME_DELTA = 0.05
 #The test data path
 test_path_abnormal = os.path.join(os.getcwd(),"test\\abnormal")
 test_list_abnormal=os.listdir(test_path_abnormal)
+
 X_test=np.array([])
 Y_test=np.array([])
 
@@ -119,28 +127,36 @@ test_list_normal=os.listdir(test_path_normal)
 for file_normal in test_list_normal:
 	video_src = test_path_normal + '/' + file_normal
 	x8 = MHI(video_src)
-	X_test = np.append(X_test, np.mean(x8)*10000)
 
+	X_test = np.append(X_test, np.mean(x8)*10000)
 	Y_test = np.append(Y_test, 1)
+	
 	print(file_normal, 'Feature Extraction for test Data',np.mean(x8)*10000)
 
 print('PREDICTION')
+
 Y_predict = model.predict(X_test)
+
 test_list=[]
 test_list = np.append(test_list, test_list_abnormal)
 test_list = np.append(test_list, test_list_normal)
+
 i=0;
 
 #Finally, the output is printed as:
 for file in test_list:
 	print(file)
+
 	if Y_test[i]==0:
 		print('Ground Truth: ','Abnormal')
 	else:
 		print('Ground Truth: ', 'Normal')
+
 	if math.floor(Y_predict[i])==0:
 		print('Predicted: ','Abnormal')
 	else:
 		print('Predicted: ', 'Normal')
+
 	print('')
+
 	i=i+1
