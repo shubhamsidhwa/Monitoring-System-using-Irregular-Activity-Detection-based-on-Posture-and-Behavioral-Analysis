@@ -1,5 +1,6 @@
 import cv2
 import csv
+
 import numpy as np
 import os
 
@@ -16,19 +17,26 @@ def MHI(video_src):
 
     while True:
         ret, frame = cam.read()
+
         if not ret:
             break
+
         h, w = frame.shape[:2]
         prev_frame = frame.copy()
+
         hsv = np.zeros((h, w, 3), np.uint8)
         hsv[:, :, 1] = 255
+
         #Motion History data is first initialized
         motion_history = np.zeros((h, w), np.float32)
         timestamp = 0
+
         while True:
             ret, frame = cam.read()
+
             if not ret:
                 break
+
             frame_diff = cv2.absdiff(frame, prev_frame)
 
             #The difference between the consecutive frames is calculated and stored
@@ -69,6 +77,7 @@ def MHI(video_src):
             # print(MEI)
             prev_frame = frame.copy()
             key = cv2.waitKey(1) & 0xFF
+
             if key == 27:
                 break
 
@@ -80,10 +89,13 @@ def MHI(video_src):
 
 
 #The Hu moments are computed for the normal videos and stored in a CSV file
+
 path_normal= os.path.join(os.getcwd(),"normal") #r'D:\DIP_PROJECT\data\data\normal'
 list_normal=os.listdir(path_normal)
+
 with open(os.path.join(os.getcwd(),"dataset_act.csv"), 'a', newline='') as csvFile:
     writer = csv.writer(csvFile)
+
     for file_normal in list_normal:
         video_src = path_normal+'/'+file_normal
         MHI_DURATION = 0.5
@@ -95,28 +107,37 @@ with open(os.path.join(os.getcwd(),"dataset_act.csv"), 'a', newline='') as csvFi
         x8 = []
         x8 = MHI(video_src)
         print(np.mean(x8))
+
         #1 indicates normal video
+
         row = [np.mean(x8), '1']
         writer.writerow(row)
 
 
 
 #The Hu moments are computed for the abnormal videos and stored in a CSV file
+
 path_abnormal=os.path.join(os.getcwd(),"abnormal") #r'D:\DIP_PROJECT\data\data\abnormal'
 list_abnormal=os.listdir(path_abnormal)
+
 with open(os.path.join(os.getcwd(),"dataset_act.csv"), 'a',newline='') as csvFile:
     writer = csv.writer(csvFile)
+
     for file_abnormal in list_abnormal:
         video_src = path_abnormal+'/'+file_abnormal
         MHI_DURATION = 0.5
         DEFAULT_THRESHOLD = 32
         MAX_TIME_DELTA = 0.25
         MIN_TIME_DELTA = 0.05
+
         # The Hu moments are computed for each video and the average is appended to the same CSV file
         x8 = []
         x8 = MHI(video_src)
+
         print(np.mean(x8))
+
         # 0 indicates abnormal video
+
         row = [np.mean(x8), '0']
         writer.writerow(row)
 
